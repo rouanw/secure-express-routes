@@ -11,12 +11,14 @@ function init() {
     '/eleven': () => true,
     '/twelve': () => false,
     '/thirteen': (req) => req.query.letMeThrough,
+    '/fourteen/:number': () => true,
   }))
 
   const router = express.Router()
   router.get('/eleven',return200)
   router.get('/twelve',return200)
   router.get('/thirteen',return200)
+  router.get('/fourteen/:number',return200)
   app.use('/', router)
   return app.listen(3000)
 }
@@ -42,6 +44,11 @@ describe('secure-express-routes', () => {
   it('should pass the request to auth functions so they can use it to make decisions', async () => {
     await request(server)
       .get('/thirteen?letMeThrough=true')
+      .expect(200)
+  })
+  it('should handle placeholders in the same way express does', async () => {
+    await request(server)
+      .get('/fourteen/14')
       .expect(200)
   })
 })
