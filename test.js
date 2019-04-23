@@ -43,6 +43,18 @@ describe('secure-express-routes', () => {
       .get('/thirteen?letMeThrough=true')
       .expect(200)
   })
+  it('should pass the response to auth functions so they can access res.locals', async () => {
+    const middleware = [
+      (req, res, next) => { res.locals.isAuthorised = true; next(); },
+      secureExpressRoutes({
+        '/fish': (req, res) => res.locals.isAuthorised,
+      }),
+    ]
+    server = setup(middleware, ['/fish', return200])
+    await request(server)
+      .get('/fish')
+      .expect(200)
+  })
   it('should handle placeholders in the same way express does', async () => {
     const middleware = secureExpressRoutes({
       '/fourteen/:number': () => true,

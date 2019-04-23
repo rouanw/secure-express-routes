@@ -9,7 +9,7 @@ function secureExpressRoutes (pathsWithAuthFunctions, options = {}) {
       if (!pathToRegExp(path).test(req.path)) {
         continue;
       }
-      const ok = pathsWithAuthFunctions[path](req);
+      const ok = pathsWithAuthFunctions[path](req, res);
       if (ok) {
         return next();
       };
