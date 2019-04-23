@@ -6,12 +6,8 @@ const return200 = (req, res) => res.sendStatus(200);
 
 function setup(middleware, routeArgs) {
   const app = express()
-
   app.use(middleware);
-
-  const router = express.Router()
-  router.get(...routeArgs)
-  app.use('/', router)
+  app.get(...routeArgs)
   return app.listen(3000)
 }
 
