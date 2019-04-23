@@ -2,21 +2,21 @@ const request = require('supertest')
 const express = require('express')
 const secureExpressRoutes = require('.')
 
+const return200 = (req, res) => res.sendStatus(200);
+
 function init() {
   const app = express()
 
   app.use(secureExpressRoutes({
     '/eleven': () => true,
     '/twelve': () => false,
+    '/thirteen': (req) => req.query.letMeThrough,
   }))
 
   const router = express.Router()
-  router.get('/eleven', (req,res, n) => {
-    res.sendStatus(200)
-  })
-  router.get('/twelve', (req,res, n) => {
-    res.sendStatus(200)
-  })
+  router.get('/eleven',return200)
+  router.get('/twelve',return200)
+  router.get('/thirteen',return200)
   app.use('/', router)
   return app.listen(3000)
 }
@@ -38,5 +38,10 @@ describe('secure-express-routes', () => {
     await request(server)
       .get('/twelve')
       .expect(403)
+  })
+  it('should pass the request to auth functions so they can use it to make decisions', async () => {
+    await request(server)
+      .get('/thirteen?letMeThrough=true')
+      .expect(200)
   })
 })
