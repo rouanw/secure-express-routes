@@ -52,4 +52,13 @@ describe('secure-express-routes', () => {
       .get('/fourteen/14')
       .expect(200)
   })
+  it('should allow the response code to be configured', async () => {
+    const middleware = secureExpressRoutes({
+      '/fifteen': () => false,
+    }, { responseCode: 404 })
+    server = setup(middleware, ['/fifteen', return200])
+    await request(server)
+      .get('/fifteen')
+      .expect(404)
+  })
 })

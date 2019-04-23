@@ -1,6 +1,7 @@
 const pathToRegExp = require('path-to-regexp');
 
-function secureExpressRoutes (pathsWithAuthFunctions) {
+function secureExpressRoutes (pathsWithAuthFunctions, options = {}) {
+  const { responseCode } = options;
   return function (req, res, next) {
     const paths = Object.keys(pathsWithAuthFunctions);
     for (var i = 0; i < paths.length; i++) {
@@ -13,7 +14,7 @@ function secureExpressRoutes (pathsWithAuthFunctions) {
         return next();
       };
     }
-    res.status(403);
+    res.status(responseCode || 403);
     res.end();
   }
 }
