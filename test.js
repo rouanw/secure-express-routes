@@ -4,49 +4,54 @@ const secureExpressRoutes = require('.')
 
 const return200 = (req, res) => res.sendStatus(200);
 
-function init() {
+function setup(middleware, routeArgs) {
   const app = express()
 
-  app.use(secureExpressRoutes({
-    '/eleven': () => true,
-    '/twelve': () => false,
-    '/thirteen': (req) => req.query.letMeThrough,
-    '/fourteen/:number': () => true,
-  }))
+  app.use(middleware);
 
   const router = express.Router()
-  router.get('/eleven',return200)
-  router.get('/twelve',return200)
-  router.get('/thirteen',return200)
-  router.get('/fourteen/:number',return200)
+  router.get(...routeArgs)
   app.use('/', router)
   return app.listen(3000)
 }
 
 describe('secure-express-routes', () => {
   let server
-  beforeEach(() => {
-    server = init()
-  })
   afterEach(() => {
     server.close()
   })
   it('should allow a route configured to return true to 200', async () => {
+    const middleware = secureExpressRoutes({
+      '/eleven': () => true,
+    })
+    server = setup(middleware, ['/eleven', return200])
     await request(server)
       .get('/eleven')
       .expect(200)
   })
   it('should 403 for a route configured to return false', async () => {
+    const middleware = secureExpressRoutes({
+      '/twelve': () => false,
+    })
+    server = setup(middleware, ['/twelve', return200])
     await request(server)
       .get('/twelve')
       .expect(403)
   })
   it('should pass the request to auth functions so they can use it to make decisions', async () => {
+    const middleware = secureExpressRoutes({
+      '/thirteen': () => (req) => req.query.letMeThrough,
+    })
+    server = setup(middleware, ['/thirteen', return200])
     await request(server)
       .get('/thirteen?letMeThrough=true')
       .expect(200)
   })
   it('should handle placeholders in the same way express does', async () => {
+    const middleware = secureExpressRoutes({
+      '/fourteen/:number': () => true,
+    })
+    server = setup(middleware, ['/fourteen/:number', return200])
     await request(server)
       .get('/fourteen/14')
       .expect(200)
