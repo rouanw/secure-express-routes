@@ -1,0 +1,26 @@
+{
+  "name": "secure-express-routes",
+  "version": "1.0.0",
+  "description": "Middleware you can use to lock down all your express routes by default",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "express",
+    "secure",
+    "security",
+    "lock",
+    "default"
+  ],
+  "author": "rouanw",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.16.4",
+    "mocha": "^6.1.4",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "path-to-regexp": "^3.0.0"
+  }
+}
