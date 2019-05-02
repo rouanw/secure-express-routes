@@ -73,4 +73,11 @@ describe('secure-express-routes', () => {
       .get('/fifteen')
       .expect(404)
   })
+  it('should 403 if the route has not auth function', async () => {
+    const middleware = secureExpressRoutes({})
+    server = setup(middleware, ['/fifteen', return200])
+    await request(server)
+      .get('/fifteen')
+      .expect(403)
+  })
 })
