@@ -12,7 +12,7 @@ function secureExpressRoutes (pathsWithAuthFunctions, options = {}) {
       const ok = pathsWithAuthFunctions[path](req, res);
       if (ok) {
         return next();
-      };
+      }
     }
     res.status(responseCode || 403);
     res.end();
