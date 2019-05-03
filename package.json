@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Middleware you can use to lock down all your express routes by default",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rouanw/secure-express-routes"
+  },
   "scripts": {
     "test": "mocha"
   },
