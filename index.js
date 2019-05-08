@@ -7,13 +7,13 @@ function secureExpressRoutes (pathsWithAuthFunctions, options = {}) {
     hash[path] = pathToRegExp(path);
     return hash;
   }, {});
-  return function (req, res, next) {
+  return async function (req, res, next) {
     for (var i = 0; i < paths.length; i++) {
       const path = paths[i];
       if (!pathsWithRegExps[path].test(req.path)) {
         continue;
       }
-      const ok = pathsWithAuthFunctions[path](req, res);
+      const ok = await pathsWithAuthFunctions[path](req, res);
       if (ok) {
         return next();
       }

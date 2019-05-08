@@ -80,4 +80,20 @@ describe('secure-express-routes', () => {
       .get('/fifteen')
       .expect(403)
   })
+  it('should support async auth functions', async () => {
+    const somethingAsync = () => {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(false);
+        }, 200);
+      });
+    }
+    const middleware = secureExpressRoutes({
+      '/dog': somethingAsync,
+    })
+    server = setup(middleware, ['/dog', return200])
+    await request(server)
+      .get('/dog')
+      .expect(403)
+  })
 })
