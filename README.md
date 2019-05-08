@@ -73,3 +73,12 @@ Example:
 Option|Description|Default
 ---|---|---
 `responseCode`|The HTTP response code to return by default|`403`
+
+
+## Performance
+
+Because `secure-express-routes` iterates over an array of routes on each request, it may get slow with for applications with lots of routes. A workaround will be to split your routes into different routers and have one `secureExpressRoutes` instance for each router.
+
+## License
+
+MIT
