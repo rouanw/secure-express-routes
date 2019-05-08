@@ -1,6 +1,6 @@
 {
   "name": "secure-express-routes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Middleware you can use to lock down all your express routes by default",
   "main": "index.js",
   "repository": {
