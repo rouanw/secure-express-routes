@@ -2,11 +2,15 @@ const pathToRegExp = require('path-to-regexp');
 
 function secureExpressRoutes (pathsWithAuthFunctions, options = {}) {
   const { responseCode } = options;
+  const paths = Object.keys(pathsWithAuthFunctions);
+  const pathsWithRegExps = paths.reduce((hash, path) => {
+    hash[path] = pathToRegExp(path);
+    return hash;
+  }, {});
   return function (req, res, next) {
-    const paths = Object.keys(pathsWithAuthFunctions);
     for (var i = 0; i < paths.length; i++) {
       const path = paths[i];
-      if (!pathToRegExp(path).test(req.path)) {
+      if (!pathsWithRegExps[path].test(req.path)) {
         continue;
       }
       const ok = pathsWithAuthFunctions[path](req, res);
