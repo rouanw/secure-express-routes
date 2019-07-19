@@ -2,7 +2,12 @@
 
 > Express middleware you can use to lock down all your routes by default
 
-__Disclaimer:__ This package doesn't actually do anything to secure your routes. It just makes returning a `403` the default for every route in your application. What security you need will be specific to your scenario.
+## Limitations
+
+Turns out that this approach is probably not suitable for most applications. `secure-express-routes` can’t access `req.params`, because that’s not set until the middleware defined on an actual route is run. Any applications that use `req.params` for permission checks, won't be able to use this library as a viable option. See expressjs/express#2088.
+
+## Disclaimer
+This package doesn't actually do anything to secure your routes. It just makes returning a `403` the default for every route in your application. What security you need will be specific to your scenario.
 
 ## Use case
 
